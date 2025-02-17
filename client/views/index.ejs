@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <%- include('./partials/header') %>
+      <% if (locals.title) { %>
+        <title><%= title %></title> 
+      <% } %>
+  </head>
+  <body>
+    <% if (locals.message) { %>
+      <h1><%= message %></h1> 
+    <% } %>
+    <h3>Upload Videos</h3>
+    <form action="/api/videos/upload" method="POST" enctype="multipart/form-data">
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" placeholder="Enter your email" required>
+
+      <label for="videos">Select Videos:</label>
+      <input type="file" name="videos" id="videos" multiple required>
+
+      <button type="submit">Upload Videos</button>
+    </form>
+    <%- include('./partials/footer') %>
+  </body>
+</html>

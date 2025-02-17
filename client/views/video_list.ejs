@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/header') %>
+  <title>Video List</title>
+  <style>
+    /* Add your custom styles here */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Video List</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Video ID</th>
+        <th>Video Name</th>
+        <th>Status</th>
+        <th>Converted Video URL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (locals.videos) { %>
+        <% videos.forEach(video => { %>
+          <tr>
+            <td><%= video._id %></td>
+            <td><%= video.originalName %></td>
+            <td><%= video.status %></td>
+            <td>
+              <% if (video.status === 'Completed' && video.convertedPath) { %>
+                <a href="/<%= video.convertedPath %>" target="_blank">View Converted Video</a>
+              <% } else { %>
+                Not available
+              <% } %>
+            </td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr>
+          <td colspan="4">No videos uploaded yet.</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <a href="/">Go back to home</a>
+  <%- include('./partials/footer') %>
+</body>
+</html>

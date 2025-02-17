@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/header') %>
+    <title>Video Status</title>
+</head>
+<body>
+  <h1>Video Status</h1>
+  <% if (locals.video) { %>
+    <p>Video ID: <%= video._id %></p>
+    <p>Status: <%= video.status %></p> 
+  <% } %>
+  <a href="/">Go back to home</a>
+  <%- include('./partials/footer') %>
+</body>
+</html>

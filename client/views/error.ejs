@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/header') %>  
+    <title>Error</title>
+</head>
+<body>
+  <h1>An error occurred</h1>
+  <% if (locals.message) { %>
+    <p><%= message %></p>
+  <% } %>
+
+  <% if (locals.error) { %>
+    <pre><%= error.stack %></pre>
+  <% } %>
+
+  <a href="/">Return to Home</a>
+
+  <%- include('./partials/footer') %>
+</body>
+</html>

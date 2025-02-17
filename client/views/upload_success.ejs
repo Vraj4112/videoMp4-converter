@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <%- include('./partials/header') %>
+    <title>Upload Success</title>
+  </head>
+  <body>
+    <% if (locals.message) { %>
+      <h1><%= message %></h1>
+    <% } %>
+    <h3>Video Processing Status</h3>
+    <table>
+      <thead>
+        <tr>
+          <!-- <th>Video ID</th> -->
+          <th>Video Name</th>
+          <th>Status</th>
+          <th>Progress</th>
+          <th>Converted video URL</th>
+        </tr>
+      </thead>
+      <% if (locals.videos) { %>
+        <tbody>
+          <% videos.forEach(video => { %>
+            <tr>
+              <!-- <td><%= video._id %></td> -->
+              <td><%= video.originalName %></td>
+              <td id="status-<%= video._id %>"><%= video.status %></td>
+              <td id="progress-cell-<%= video._id %>">
+                <!-- Progress bar will be inserted here -->
+              </td>
+              <td id="URL-<%= video._id %>"></td>
+            </tr>
+          <% }); %>
+          <% } else { %>
+            <tr>
+              <td colspan="4">No videos uploaded yet.</td>
+            </tr>
+        </tbody>
+      <% } %>
+    </table>
+    <!-- <div id="statusUpdates"></div> -->
+    
+    <a href="/">Go back to home</a>
+    <%- include('./partials/footer') %>
+
+    <!-- Include Socket.io client script and client-side JS -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script nonce="<%= nonce %>">
+      const socket = io();
+
+      socket.on('videoStatusUpdate', data => {
+        const { videoId, status,convertedPath } = data;
+        updateVideoStatus(videoId, status,convertedPath);
+      });
+
+      socket.on('videoProgress', data => {
+        const { videoId, percentage } = data;
+        updateVideoProgress(videoId, percentage);
+      });
+
+      function updateVideoStatus(videoId, status,convertedPath) {
+        const statusElement = document.getElementById(`status-${videoId}`);
+        const URLElement = document.getElementById(`URL-${videoId}`);
+        if (statusElement) {
+          statusElement.textContent = status;
+        }
+        if(status=="Completed" && convertedPath){
+          if (URLElement) {
+            URLElement.innerHTML = `<a href="/${convertedPath}" target="_blank">View Converted Video</a>`;
+        }
+        }
+        // const statusContainer = document.getElementById('statusUpdates');
+        // statusContainer.textContent = `Video ${videoId} is now ${status}`;
+      }
+
+      function updateVideoProgress(videoId, percentage){
+        const progressCell = document.getElementById(`progress-cell-${videoId}`);
+        if (!progressCell) {
+          return;
+        }
+        let progressBar = document.getElementById(`progress-${videoId}`);
+        let percentageLabel = document.getElementById(`percentage-${videoId}`);
+        
+        if (!progressBar) {
+          // Create a container for the progress bar and percentage label
+          const container = document.createElement('div');
+          container.style.display = 'flex';
+          container.style.alignItems = 'center';
+
+          // Create a progress bar if it doesn't exist
+          progressBar = document.createElement('progress');
+          progressBar.id = `progress-${videoId}`;
+          progressBar.max = 100;
+          progressBar.value = percentage;
+
+          // Create a percentage label if it doesn't exist
+          percentageLabel = document.createElement('span');
+          percentageLabel.id = `percentage-${videoId}`;
+          percentageLabel.style.marginLeft = '10px';
+          percentageLabel.textContent = `${percentage}%`;
+
+          container.appendChild(progressBar);
+          container.appendChild(percentageLabel);
+          progressCell.appendChild(container);
+        } else {
+          // Update the progress bar and percentage label if they exist
+          if (percentage >= 95) {
+            progressBar.value = 100;
+            percentageLabel.textContent = '100%';
+          }
+          else {
+            progressBar.value = percentage+1;
+            percentageLabel.textContent = `${percentage + 1}%`;
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

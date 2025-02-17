@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include( './partials/header') %>
+      <% if (locals.title) { %>
+        <title><%= title %></title>
+        <% } %>
+  </head>
+  <body>
+    <% if (locals.message) { %>
+      <h1><%= message %></h1>
+      <% } %>
+        <h3>Upload Videos</h3>
+        <form action="/api/videos/upload" method="POST" enctype="multipart/form-data">
+          <label for="email">Email:</label>
+          <input type="email" name="email" id="email" placeholder="Enter your email" required>
+          <label for="videos">Select Videos:</label>
+          <input type="file" name="videos" id="videos" multiple required>
+          <button type="submit">Upload Videos</button>
+        </form>
+        <div id="statusUpdates"></div>
+        <%- include( './partials/footer') %>
+          <script src="/socket.io/socket.io.js"></script>
+          <script>
+            const socket = io();
+            socket.on('videoStatusUpdate', (data) => {
+              
+              updateVideoStatus(data.videoId, data.status);
+            });
+            function updateVideoStatus(videoId, status) {
+              const statusElement = document.getElementById(`status-${videoId}`);
+              if (statusElement) {
+                statusElement.textContent = status;
+              } else {
+                const statusContainer = document.getElementById('statusUpdates');
+                const statusDiv = document.createElement('div');
+                statusDiv.id = `status-${videoId}`;
+                statusDiv.textContent = `Video ${videoId} is now ${status}`;
+                statusContainer.appendChild(statusDiv);
+              }
+            }
+            socket.on('videoStatusUpdate', (data) =>{
+              const statusDiv = document.getElementById('statusUpdates');
+              const statusMessage = `Video ${data.videoId} is now ${data.status}`;
+              const p = document.createElement('p');
+              p.textContent = statusMessage;
+              statusDiv.appendChild(p);
+            });
+          </script>
+  </body>
+
+</html>
