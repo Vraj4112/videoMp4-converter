@@ -32,35 +32,35 @@ Ensure you have the following software installed:
 
 ### 2. Install Chocolatey (Windows Only)
 
-# bash run following command in cmd or powershell in windows
+#### bash run following command in cmd or powershell in windows
 
 - Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
 ### 3. Install FFmpeg
 
-# bash run following command in cmd or powershell in windows
+#### bash run following command in cmd or powershell in windows
 
 - choco install ffmpeg-full
 
 ### 4. Install Redis
 
-# bash run following command in cmd or powershell in windows
+#### bash run following command in cmd or powershell in windows
 
 - choco install redis
 
-# Start Redis Server with this command in cmd in windows
+#### Start Redis Server with this command in cmd in windows
 
 - redis-server
 
 ### 5. Set Up MongoDB
 
-# Bash run docker command
+#### Bash run docker command
 
 - docker run --name mongodb -p 27017:27017 -d mongo
 
 ### 6. Environment Configuration
 
-# Bash
+#### Bash
 
 - cp .env.example .env.development.local
 
@@ -72,15 +72,15 @@ Ensure you have the following software installed:
 
 ### 7. Setting Up App Password for Gmail
 
-## To use Nodemailer with Gmail, you need to set up an App Password:
+#### To use Nodemailer with Gmail, you need to set up an App Password:
 
-# Enable 2-Step Verification:
+##### Enable 2-Step Verification:
 
 - Go to your Google Account.
 
 - Under "Security," select "2-Step Verification" and follow the instructions to set it up.
 
-# Generate App Password:
+##### Generate App Password:
 
 - After enabling 2-Step Verification, return to the "Security" section.
 
@@ -92,31 +92,31 @@ Ensure you have the following software installed:
 
 ### 8. Start the Application
 
-# Bash
+#### Bash
 
 - npm start // this should start server on http://localhost:3002
 
 ### 9. API Endpoints
 
-## POST - Home route to upload videos:
+#### POST - Home route to upload videos:
 
 - Request upload form data including email for notification and videos to convert.
 
 - http://localhost:3002/api/videos/upload
 
-## GET - Get all video list:
+#### GET - Get all video list:
 
 - Full list of videos.
 
 - http://localhost:3002/api/videos
 
-## GET - Get video details by ID:
+#### GET - Get video details by ID:
 
 - Single video by ID.
 
 - http://localhost:3002/api/videos/:id/status
 
-## Features
+### Features
 
 - Video upload and processing
 
@@ -128,7 +128,7 @@ Ensure you have the following software installed:
 
 - Rate limiting to prevent abuse
 
-## Usage
+### Usage
 
 - **Upload Videos**: Go to the home page and upload videos.
 
